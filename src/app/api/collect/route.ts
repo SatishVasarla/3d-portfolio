@@ -3,8 +3,10 @@ import { UMAMI_ORIGIN } from "@/lib/umami";
 const OWN = new Set([
   "localhost",
   "127.0.0.1",
-  "nareshkhatri.dev",
-  "www.nareshkhatri.dev",
+  "satishvasarla.dev",
+  "www.satishvasarla.dev",
+  "satishvasarla.github.io",
+  "www.satishvasarla.github.io",
 ]);
 
 const ok = () => new Response(null, { status: 204 });
@@ -22,7 +24,12 @@ export async function POST(req: Request) {
   }
 
   if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(host)) return ok();
-  if (OWN.has(host) || host.endsWith(".nareshkhatri.dev")) return ok();
+  if (
+    OWN.has(host) ||
+    host.endsWith(".satishvasarla.dev") ||
+    host.endsWith(".satishvasarla.github.io")
+  )
+    return ok();
 
   // Origin is browser-set, so it corroborates the reported host
   const origin = req.headers.get("origin") ?? "";

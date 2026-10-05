@@ -1,6 +1,7 @@
 "use client";
 import { ChevronRight, Loader2 } from "lucide-react";
 import React from "react";
+import emailjs from "@emailjs/browser";
 import { Label } from "./ui/label";
 import { Input } from "./ui/ace-input";
 import { Textarea } from "./ui/ace-textarea";
@@ -9,6 +10,7 @@ import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { config } from "@/data/config";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
@@ -45,40 +47,47 @@ const ContactForm = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, message }),
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "yD-hWr2ZhwYuM-TTy";
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "service_7tgm5s4";
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "template_lksrww8";
+
+      await emailjs.send(serviceId, templateId, {
+        from_name: fullName,
+        from_email: email,
+        message,
+        to_email: config.email,
+        subject: `Portfolio inquiry from ${fullName}`,
+      }, {
+        publicKey,
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || `Request failed (${res.status})`);
-      }
+
       toast({
         title: "Thank you!",
-        description: "I'll get back to you as soon as possible.",
+        description: "Your message has been sent successfully.",
         variant: "default",
         className: cn("top-0 mx-auto flex fixed md:top-4 md:right-4"),
       });
-      setLoading(false);
+
       setFullName("");
       setEmail("");
       setMessage("");
+
       const timer = setTimeout(() => {
         router.push("/");
         clearTimeout(timer);
-      }, 1000);
+      }, 1200);
     } catch (err) {
       toast({
-        title: "Error",
-        description: "Something went wrong! Please try again.",
+        title: "Message not sent",
+        description: "Something went wrong. Please try again or email me directly at satishvasarla827@gmail.com.",
         className: cn(
           "top-0 w-full flex justify-center fixed md:max-w-7xl md:top-4 md:right-4"
         ),
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
   return (
     <form className="min-w-7xl mx-auto sm:mt-4" onSubmit={handleSubmit} aria-busy={loading}>

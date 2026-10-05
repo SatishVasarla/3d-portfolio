@@ -24,11 +24,11 @@ const config = {
     "Framer Motion",
   ],
   author: "Satish Vasarla",
-  email: "naresh.khatri2345@gmail.com",
-  site: "https://nareshkhatri.dev",
+  email: "satishvasarla827@gmail.com",
+  site: "https://github.com/SatishVasarla",
 
   // for github stars button
-  githubUsername: "naresh-khatri",
+  githubUsername: "SatishVasarla",
   githubRepo: "3d-portfolio",
 
   get ogImg() {
@@ -36,10 +36,10 @@ const config = {
   },
   social: {
     twitter: "https://x.com/nothotchaddi",
-    linkedin: "https://www.linkedin.com/in/naresh-khatri/",
+    linkedin: "https://www.linkedin.com/in/satish-vasarla-38315724a/?isSelfProfile=true",
     instagram: "https://www.instagram.com/hotchaddi",
     facebook: "https://www.facebook.com/HotChaddi/",
-    github: "https://github.com/Naresh-Khatri",
+    github: "https://github.com/SatishVasarla",
   },
 };
 export { config };
